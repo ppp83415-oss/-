@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Free Things Counter</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            color: #4a6fa5;
+            margin-bottom: 10px;
+            font-size: 2.5rem;
+        }
+        
+        .subtitle {
+            color: #666;
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .stats-container {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-box {
+            background-color: white;
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            flex: 1;
+            min-width: 200px;
+        }
+        
+        .stat-value {
+            font-size: 3.5rem;
+            font-weight: bold;
+            color: #4a6fa5;
+            margin: 10px 0;
+        }
+        
+        .stat-label {
+            font-size: 1.2rem;
+            color: #666;
+        }
+        
+        .main-content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .items-list {
+            flex: 2;
+            min-width: 300px;
+            background-color: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .add-item {
+            flex: 1;
+            min-width: 250px;
+            background-color: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        h2 {
+            color: #4a6fa5;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        
+        .item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            margin-bottom: 15px;
+            background-color: #f9f9f9;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.08);
+        }
+        
+        .item-name {
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+        
+        .item-count {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .count-value {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #4a6fa5;
+            min-width: 50px;
+            text-align: center;
+        }
+        
+        .btn-count {
+            background-color: #4a6fa5;
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            font-size: 1.3rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-count:hover {
+            background-color: #3a5a8a;
+            transform: scale(1.1);
+        }
+        
+        .btn-delete {
+            background-color: #ff6b6b;
+            color: white;
+            border: none;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            margin-left: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-delete:hover {
+            background-color: #ff5252;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #555;
+        }
+        
+        input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border 0.3s ease;
+        }
+        
+        input:focus {
+            border-color: #4a6fa5;
+            outline: none;
+        }
+        
+        .btn-add {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-add:hover {
+            background-color: #3d8b40;
+        }
+        
+        .empty-list {
+            text-align: center;
+            padding: 40px 20px;
+            color: #888;
+            font-style: italic;
+        }
+        
+        footer {
+            text-align: center;
+            color: #666;
+            padding: 20px;
+            margin-top: 30px;
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 768px) {
+            .main-content {
+                flex-direction: column;
+            }
+            
+            .stats-container {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-gift"></i> 免費思想千萬年放光芒網</h1>
+            <p class="subtitle">Track all the free items you've acquired. From samples and giveaways to freebies and found treasures!</p>
+        </header>
+        
+        <div class="stats-container">
+            <div class="stat-box">
+                <div class="stat-label">Total Items</div>
+                <div class="stat-value" id="total-items">0</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-label">Total Count</div>
+                <div class="stat-value" id="total-count">0</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-label">Most Common</div>
+                <div class="stat-value" id="most-common">-</div>
+            </div>
+        </div>
+        
+        <div class="main-content">
+            <div class="items-list">
+                <h2>My Free Items</h2>
+                <div id="items-container">
+                    <!-- Items will be added here dynamically -->
+                    <div class="empty-list" id="empty-message">No items yet. Add your first free item!</div>
+                </div>
+            </div>
+            
+            <div class="add-item">
+                <h2>Add New Item</h2>
+                <form id="add-item-form">
+                    <div class="form-group">
+                        <label for="item-name">Item Name</label>
+                        <input type="text" id="item-name" placeholder="e.g., Coffee Samples, T-shirts, Books" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="item-count">Initial Count</label>
+                        <input type="number" id="item-count" min="1" value="1" required>
+                    </div>
+                    <button type="submit" class="btn-add">
+                        <i class="fas fa-plus-circle"></i> Add to Collection
+                    </button>
+                </form>
+                
+                <div style="margin-top: 30px; padding-top: 20px; border-top: 2px solid #f0f0f0;">
+                    <h3>Tips for Finding Free Items</h3>
+                    <ul style="padding-left: 20px; margin-top: 10px; color: #666;">
+                        <li>Sign up for free samples online</li>
+                        <li>Join loyalty programs for freebies</li>
+                        <li>Check "Free" sections on marketplace apps</li>
+                        <li>Attend conferences and events for swag</li>
+                        <li>Look for "Buy One Get One Free" deals</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>Free Things Counter &copy; <span id="current-year">2023</span> | Track your free finds!</p>
+            <p>All data is stored locally in your browser.</p>
+        </footer>
+    </div>
+
+    <script>
+        // Set current year in footer
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+        
+        // Sample initial items
+        let items = [
+            
+        ];
+        
+        // Load items from localStorage if available
+        const storedItems = localStorage.getItem('freeThingsItems');
+        if (storedItems) {
+            items = JSON.parse(storedItems);
+        }
+        
+        // DOM elements
+        const itemsContainer = document.getElementById('items-container');
+        const totalItemsElement = document.getElementById('total-items');
+        const totalCountElement = document.getElementById('total-count');
+        const mostCommonElement = document.getElementById('most-common');
+        const addItemForm = document.getElementById('add-item-form');
+        const itemNameInput = document.getElementById('item-name');
+        const itemCountInput = document.getElementById('item-count');
+        
+        // Render all items
+        function renderItems() {
+            // Clear container
+            itemsContainer.innerHTML = '';
+            
+            if (items.length === 0) {
+                itemsContainer.innerHTML = '<div class="empty-list" id="empty-message">No items yet. Add your first free item!</div>';
+                updateStats();
+                return;
+            }
+            
+            // Hide empty message
+            const emptyMessage = document.getElementById('empty-message');
+            if (emptyMessage) emptyMessage.style.display = 'none';
+            
+            // Render each item
+            items.forEach((item, index) => {
+                const itemElement = document.createElement('div');
+                itemElement.className = 'item';
+                itemElement.innerHTML = `
+                    <div class="item-name">${item.name}</div>
+                    <div class="item-count">
+                        <button class="btn-count" onclick="decrementCount(${index})">-</button>
+                        <div class="count-value">${item.count}</div>
+                        <button class="btn-count" onclick="incrementCount(${index})">+</button>
+                        <button class="btn-delete" onclick="deleteItem(${index})">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                `;
+                itemsContainer.appendChild(itemElement);
+            });
+            
+            updateStats();
+            saveItems();
+        }
+        
+        // Update statistics
+        function updateStats() {
+            // Total items
+            totalItemsElement.textContent = items.length;
+            
+            // Total count
+            const totalCount = items.reduce((sum, item) => sum + item.count, 0);
+            totalCountElement.textContent = totalCount;
+            
+            // Most common item
+            if (items.length > 0) {
+                const mostCommon = items.reduce((prev, current) => 
+                    (prev.count > current.count) ? prev : current
+                );
+                mostCommonElement.textContent = mostCommon.name;
+            } else {
+                mostCommonElement.textContent = '-';
+            }
+        }
+        
+        // Increment item count
+        function incrementCount(index) {
+            items[index].count++;
+            renderItems();
+        }
+        
+        // Decrement item count
+        function decrementCount(index) {
+            if (items[index].count > 1) {
+                items[index].count--;
+            } else {
+                // If count is 1, remove the item
+                if (confirm(`Remove ${items[index].name} from your list?`)) {
+                    items.splice(index, 1);
+                }
+            }
+            renderItems();
+        }
+        
+        // Delete item
+        function deleteItem(index) {
+            if (confirm(`Are you sure you want to remove ${items[index].name}?`)) {
+                items.splice(index, 1);
+                renderItems();
+            }
+        }
+        
+        // Add new item
+        addItemForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const name = itemNameInput.value.trim();
+            const count = parseInt(itemCountInput.value);
+            
+            if (!name) return;
+            
+            // Check if item already exists
+            const existingIndex = items.findIndex(item => 
+                item.name.toLowerCase() === name.toLowerCase()
+            );
+            
+            if (existingIndex >= 0) {
+                // If exists, add to count
+                items[existingIndex].count += count;
+                alert(`Added ${count} more to ${name}. Total: ${items[existingIndex].count}`);
+            } else {
+                // Add new item
+                items.push({ name, count });
+            }
+            
+            // Clear form
+            itemNameInput.value = '';
+            itemCountInput.value = 1;
+            
+            renderItems();
+        });
+        
+        // Save items to localStorage
+        function saveItems() {
+            localStorage.setItem('freeThingsItems', JSON.stringify(items));
+        }
+        
+        // Initialize
+        renderItems();
+    </script>
+</body>
+</html>
